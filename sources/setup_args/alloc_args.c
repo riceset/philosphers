@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   alloc_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkomeno <tkomeno@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 16:46:22 by tkomeno           #+#    #+#             */
-/*   Updated: 2023/11/17 10:31:34 by tkomeno          ###   ########.fr       */
+/*   Created: 2023/11/17 10:31:28 by tkomeno           #+#    #+#             */
+/*   Updated: 2023/11/17 10:32:43 by tkomeno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main(int argc, char **argv)
+t_args *alloc_args(void) 
 {
-  t_args args;
-
-  if (incorrect_input(argc, argv))
-    return (EXIT_FAILURE);
-  if (setup_args(&args, argc, argv))
-    return (EXIT_FAILURE);
-
-  printf("%d\n", args.num_of_philosophers);
-
-  return (EXIT_SUCCESS);
+  return ((t_args *)malloc(sizeof(t_args) * 1));
 }

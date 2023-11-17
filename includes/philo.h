@@ -8,6 +8,8 @@
 /* ************************************************************************** */
 
 #define ATOI_ERROR (-1)
+#define NUM_MUST_EAT_NOT_SET (-1)
+#define ALLOC_ERROR (1)
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -68,5 +70,10 @@ bool wrong_num_philos(int i, int curr_arg);
 //helpers
 bool is_digit(int c);
 int my_atoi(const char *str);
+
+//setup args
+int setup_args(t_args *args, int argc, char **argv);
+void init_args(t_args *args, int argc, char **argv);
+t_args *alloc_args(void);
 
 #endif

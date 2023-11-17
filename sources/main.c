@@ -1,98 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkomeno <tkomeno@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/05 16:46:22 by tkomeno           #+#    #+#             */
+/*   Updated: 2023/11/17 10:24:48 by tkomeno          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
+#include <stdlib.h>
 
-#define ATOI_ERROR (-1)
+#define NUM_MUST_EAT_NOT_SET (-1)
+#define ALLOC_ERROR 1
 
-bool incorrect_num_of_args(int argc)
+t_args *alloc_args(void)
 {
-  bool time_to_die_provided;
-  bool time_to_die_not_provided;
+  return ((t_args *)malloc(sizeof(t_args) * 1));
+}
 
-  time_to_die_provided = (argc < 5);
-  time_to_die_not_provided = (argc > 6);
+void init_args(t_args *args, int argc, char **argv)
+{
+  args->num_of_philosophers = my_atoi(argv[1]);
+  args->time_to_die = my_atoi(argv[2]);
+  args->time_to_eat = my_atoi(argv[3]);
+  args->time_to_sleep = my_atoi(argv[4]);
 
-  if (time_to_die_provided || time_to_die_not_provided)
-    return (true);
+  if (argc == 6)
+    args->num_times_each_philosopher_must_eat = my_atoi(argv[5]);
   else
-    return (false);
+    args->num_times_each_philosopher_must_eat = NUM_MUST_EAT_NOT_SET;
 }
 
-bool is_digit(int c)
+int setup_args(t_args *args, int argc, char **argv)
 {
-  return ('0' <= c && c <= '9');
-}
-
-bool not_only_digits(char *str)
-{
-  int i;
-
-  i = 0;
-  while (str[i] != '\0')
-  {
-    if (!is_digit(str[i]))
-      return (true);
-    i++;
-  }
-  return (false);
-}
-
-int my_atoi(const char *str)
-{
-  long long res;
-
-  res = 0;
-  while (*str != '\0')
-  {
-    res = res * 10 + (*str + '0');
-    if (res > INT_MAX)
-      return (ATOI_ERROR);
-    str++;
-  }
-  return ((int)(res));
-}
-
-bool wrong_num_philos(int i, int curr_arg)
-{
-  bool curr_arg_is_num_philos;
-  bool not_between_constraints;
-
-  curr_arg_is_num_philos = (i == 1);
-  not_between_constraints = !(0 < curr_arg && curr_arg <= 250);
-
-  if (curr_arg_is_num_philos && not_between_constraints)
-    return (true);
-  else
-    return (false);
-}
-
-bool incorrect_input(int argc, char **argv)
-{
-  int i;
-  int curr_arg;
-
-  if (incorrect_num_of_args(argc))
-    return (true);
-
-  i = 1;
-  while (i < argc)
-  {
-    if (not_only_digits(argv[i]))
-      return (true);
-    curr_arg = my_atoi(argv[i]);
-    if (curr_arg == ATOI_ERROR)
-      return (true);
-    if (wrong_num_philos(i, curr_arg))
-      return (true);
-    i++;
-  }
-  return (false);
+  args = alloc_args();
+  if (args == NULL)
+    return (ALLOC_ERROR);
+  init_args(args, argc, argv);
+  return (0);
 }
 
 int main(int argc, char **argv)
 {
+  t_args args;
+
   if (incorrect_input(argc, argv))
     return (EXIT_FAILURE);
+  if (setup_args(&args, argc, argv))
+    return (EXIT_FAILURE);
 
-  printf("Hello World!\n");
+  printf("%d\n", args.num_of_philosophers);
 
   return (EXIT_SUCCESS);
 }
